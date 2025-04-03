@@ -48,7 +48,7 @@ const loadVideoDetails=(videoId)=>{
   fetch(url)
   .then((res) => res.json())
   .then ((data)=> displayVideoDetails(data.video));
-}
+};
 
 const displayVideoDetails = (video) => {
   console.log(video);
@@ -56,7 +56,7 @@ const displayVideoDetails = (video) => {
   const detailsContainer = document.getElementById("details-container");
  
   detailsContainer.innerHTML= `
-  <div class="card bg-base-100 image-full shadow-sm">
+   <div class="card bg-base-100 image-full shadow-sm">
   <figure>
     <img
       src="${video.thumbnail}"
@@ -68,7 +68,8 @@ const displayVideoDetails = (video) => {
     <div class="card-actions justify-end">
     </div>
   </div>
-</div>`
+</div>
+ `
 
 };
 
@@ -132,7 +133,7 @@ const displayVideoDetails = (video) => {
                 
               
               </div>
-              <button onclick=loadVideoDetails(`${video.video_id`}) class="btn btn-block">Show Details</button>
+              <button onclick=loadVideoDetails('${video.video_id}') class="btn btn-block">Show Details</button>
             </div>
         
         `
