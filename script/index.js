@@ -1,3 +1,13 @@
+const showLoader = ()=>{
+  document.getElementById ("loader").classList.remove("hidden");
+  document.getElementById ("video-container").classList.add("hidden");}
+const hideLoader = ()=>{
+  document.getElementById ("loader").classList.add("hidden");
+  document.getElementById ("video-container").classList.remove("hidden");
+  
+}
+
+
 function removeActiveClass (){
   const activeButtons = document.getElementsByClassName("active");
 
@@ -14,8 +24,10 @@ function loadCategories(){
     .then((data)=>displayCatergories(data.categories));
 }
  
-function loadVideos() {
-    fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+function loadVideos(searchText = "") {
+  showLoader();
+  
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((response)=> response.json())
     .then((data)=>{
       removeActiveClass();
@@ -26,7 +38,7 @@ function loadVideos() {
 }
 
 const loadCategoryVideos= (id) => {
-  
+  showLoader();
   const url =`https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
   console.log(url);
 
@@ -70,7 +82,6 @@ const displayVideoDetails = (video) => {
   </div>
 </div>
  `
-
 };
 
     function displayCatergories(categories){
@@ -100,7 +111,9 @@ const displayVideoDetails = (video) => {
             <img class="w-[120px]" src="./Assets/Icon.png" alt="">
             <h2 class="text-2xl font-bold">Oops!! Sorry, There is no content here</h2>
         </div>
-        `
+        `;
+        hideLoader();
+        return;
       }
 
        videos.forEach(video=>{
@@ -126,7 +139,10 @@ const displayVideoDetails = (video) => {
                 
                 <div class="intro">
                     <H2 class="text-sm font-semibold ">Midnight Serenade</H2>
-                    <p class="text-sm text-gray-400 flex">${video.authors[0].profile_name}<img class="w-5 h-5" src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" alt=""></p>
+                    <p class="text-sm text-gray-400 flex gap-1">
+                    ${video.authors[0].profile_name}
+                    ${video.authors[0].verified == true ? `<img class="w-5 h-5" src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" alt="">` : ``}
+                    </p>
                 <p class="text-sm text-gray-400">${video.others.views} views
                 </p>
                 </div>
@@ -139,8 +155,14 @@ const displayVideoDetails = (video) => {
         `
         videoContainer.append(videoCard);
        });
-        
+        hideLoader();
 
        };
+
+       document.getElementById('search-input').addEventListener("keyup", (e) => {
+         const input = e.target.value;
+         loadVideos(input);
+        
+       });
 
        loadCategories();
